@@ -1,0 +1,6 @@
+[project]
+name = "textstats"
+version = "0.1.0"
+description = "Small text statistics helpers, used to try out night-shift."
+requires-python = ">=3.12"
+dependencies = []
