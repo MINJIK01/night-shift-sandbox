@@ -1,19 +1,22 @@
 """Small text statistics helpers."""
 
 import string
+import unicodedata
 from collections import Counter
+
+
+def _is_punctuation(char: str) -> bool:
+    return char in string.punctuation or unicodedata.category(char).startswith("P")
 
 
 def word_count(text: str) -> int:
     """Number of whitespace-separated words in ``text``.
 
-    Tokens made up only of punctuation (``string.punctuation``) are not
-    counted. Punctuation attached to a word, as in ``world!``, still counts
+    Tokens made up only of punctuation (``string.punctuation`` or any
+    Unicode punctuation category ``P*``) are not counted. Punctuation attached to a word, as in ``world!``, still counts
     as one word.
     """
-    return sum(
-        1 for token in text.split() if not all(c in string.punctuation for c in token)
-    )
+    return sum(1 for token in text.split() if not all(_is_punctuation(c) for c in token))
 
 
 def char_frequency(text: str) -> dict[str, int]:

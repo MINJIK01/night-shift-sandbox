@@ -19,6 +19,18 @@ class WordCountTest(unittest.TestCase):
     def test_only_punctuation_tokens_have_no_words(self):
         self.assertEqual(word_count(", . ! -"), 0)
 
+    def test_unicode_punctuation_only_tokens_have_no_words(self):
+        self.assertEqual(word_count("… — 。 · “"), 0)
+
+    def test_unicode_punctuation_attached_to_word(self):
+        self.assertEqual(word_count("안녕하세요。 세계…"), 2)
+
+    def test_em_dash_token_between_words(self):
+        self.assertEqual(word_count("hello — world"), 2)
+
+    def test_ascii_punctuation_only_still_has_no_words(self):
+        self.assertEqual(word_count("!!! ..."), 0)
+
 
 class CharFrequencyTest(unittest.TestCase):
     def test_counts_each_character(self):
