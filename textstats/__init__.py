@@ -13,8 +13,10 @@ def word_count(text: str) -> int:
     """Number of whitespace-separated words in ``text``.
 
     Tokens made up only of punctuation (``string.punctuation`` or any
-    Unicode punctuation category ``P*``) are not counted. Punctuation attached to a word, as in ``world!``, still counts
-    as one word.
+    Unicode punctuation category ``P*``) are not counted. Punctuation attached to
+    a word, as in ``world!``, still counts as one word. Symbols (Unicode category
+    ``S*``, such as ``€`` or ``→``) are not punctuation, so a token made up only
+    of symbols is counted as a word.
     """
     return sum(1 for token in text.split() if not all(_is_punctuation(c) for c in token))
 
