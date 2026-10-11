@@ -31,6 +31,15 @@ class WordCountTest(unittest.TestCase):
     def test_ascii_punctuation_only_still_has_no_words(self):
         self.assertEqual(word_count("!!! ..."), 0)
 
+    def test_currency_symbol_token_counts_as_word(self):
+        self.assertEqual(word_count("가격 € 5"), 3)
+
+    def test_arrow_symbol_token_counts_as_word(self):
+        self.assertEqual(word_count("→"), 1)
+
+    def test_ascii_symbol_tokens_are_not_counted(self):
+        self.assertEqual(word_count("a + b = c"), 3)
+
 
 class CharFrequencyTest(unittest.TestCase):
     def test_counts_each_character(self):
