@@ -29,3 +29,27 @@ def char_frequency(text: str) -> dict[str, int]:
     and punctuation is counted like any other character.
     """
     return dict(Counter(c for c in text if not c.isspace()))
+
+
+def bar_chart(counts: dict[str, int], width: int = 40) -> str:
+    """Text bar chart of ``counts``, one ``key | ████ value`` line per entry.
+
+    The largest value fills ``width`` cells and the others are scaled in
+    proportion. Any value above zero gets at least one cell. Lines are sorted
+    by value descending, then key ascending, and keys are padded to the same
+    width. An empty ``counts`` gives an empty string. Raises ``ValueError`` if
+    ``width`` is below 1 or any value is negative.
+    """
+    if width < 1:
+        raise ValueError("width must be at least 1")
+    if any(v < 0 for v in counts.values()):
+        raise ValueError("counts must not contain negative values")
+    if not counts:
+        return ""
+    largest = max(counts.values())
+    key_width = max(len(k) for k in counts)
+    lines = []
+    for key, value in sorted(counts.items(), key=lambda item: (-item[1], item[0])):
+        cells = 0 if value == 0 else max(1, round(value * width / largest))
+        lines.append(f"{key.ljust(key_width)} | {'█' * cells} {value}")
+    return "\n".join(lines)
