@@ -1,6 +1,6 @@
 import unittest
 
-from textstats import bar_chart, char_frequency, word_count
+from textstats import bar_chart, char_frequency, visualize_chars, word_count
 
 
 class WordCountTest(unittest.TestCase):
@@ -86,6 +86,23 @@ class BarChartTest(unittest.TestCase):
             bar_chart({"a": -1})
         with self.assertRaises(ValueError):
             bar_chart({"a": 1}, width=0)
+
+
+class VisualizeCharsTest(unittest.TestCase):
+    def test_most_frequent_first(self):
+        lines = visualize_chars("aab").split("\n")
+        self.assertTrue(lines[0].startswith("a"))
+        self.assertTrue(lines[1].startswith("b"))
+
+    def test_top_limits_lines(self):
+        self.assertEqual(len(visualize_chars("aabbc", top=2).split("\n")), 2)
+
+    def test_whitespace_only_is_empty(self):
+        self.assertEqual(visualize_chars("   "), "")
+
+    def test_invalid_top(self):
+        with self.assertRaises(ValueError):
+            visualize_chars("a", top=0)
 
 
 if __name__ == "__main__":
