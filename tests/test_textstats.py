@@ -61,6 +61,18 @@ class CharFrequencyTest(unittest.TestCase):
     def test_punctuation_is_counted(self):
         self.assertEqual(char_frequency("a!!"), {"a": 1, "!": 2})
 
+    def test_unicode_whitespace_is_not_counted(self):
+        self.assertEqual(
+            char_frequency("a b\u3000c"), {"a": 1, "b": 1, "c": 1}
+        )
+        self.assertEqual(char_frequency("\u00a0\u3000"), {})
+
+    def test_characters_outside_bmp_are_counted(self):
+        self.assertEqual(
+            char_frequency("\U0001F600\U0001F600a"),
+            {"\U0001F600": 2, "a": 1},
+        )
+
     def test_returns_dict(self):
         self.assertIsInstance(char_frequency("abc"), dict)
 
