@@ -40,6 +40,19 @@ class WordCountTest(unittest.TestCase):
     def test_ascii_symbol_tokens_are_not_counted(self):
         self.assertEqual(word_count("a + b = c"), 3)
 
+    def test_whitespace_only_text_has_no_words(self):
+        self.assertEqual(word_count("   "), 0)
+        self.assertEqual(word_count(" \t\r\n "), 0)
+
+    def test_ideographic_space_separates_words(self):
+        self.assertEqual(word_count("a b\u3000c"), 3)
+
+    def test_non_breaking_space_separates_words(self):
+        self.assertEqual(word_count("a\u00a0b"), 2)
+
+    def test_mixed_tab_and_newline_separate_words(self):
+        self.assertEqual(word_count("a\tb\r\nc"), 3)
+
 
 class CharFrequencyTest(unittest.TestCase):
     def test_counts_each_character(self):
