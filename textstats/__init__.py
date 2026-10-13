@@ -1,4 +1,5 @@
-"""Small text statistics helpers."""
+"""Small text statistics helpers: word_count, char_frequency, bar_chart and
+visualize_chars."""
 
 import string
 import unicodedata
@@ -53,3 +54,21 @@ def bar_chart(counts: dict[str, int], width: int = 40) -> str:
         cells = 0 if value == 0 else max(1, round(value * width / largest))
         lines.append(f"{key.ljust(key_width)} | {'█' * cells} {value}")
     return "\n".join(lines)
+
+
+def visualize_chars(text: str, top: int | None = None, width: int = 40) -> str:
+    """Text bar chart of the character frequencies of ``text``.
+
+    Renders ``char_frequency(text)`` with ``bar_chart``, so whitespace is not
+    shown. If ``top`` is given, only the ``top`` most frequent characters are
+    kept (ties are broken by character, ascending). Text without visible
+    characters gives an empty string. Raises ``ValueError`` if ``top`` is below
+    1, or if ``width`` is below 1.
+    """
+    if top is not None and top < 1:
+        raise ValueError("top must be at least 1")
+    counts = char_frequency(text)
+    if top is not None:
+        ranked = sorted(counts.items(), key=lambda item: (-item[1], item[0]))
+        counts = dict(ranked[:top])
+    return bar_chart(counts, width)
